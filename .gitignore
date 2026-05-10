@@ -1,0 +1,11 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+generated/
+debug_screenshots/
+backend/c8ke_session.json
+backend/awin_merchants_cache.json
+backend/c8ke_config.json
+*.pem
+*.key

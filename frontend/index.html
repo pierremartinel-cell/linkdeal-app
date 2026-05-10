@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#000000">
+  <title>LinkDeal</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <header>
+    <div class="logo-badge">LD</div>
+    <span class="header-title">LinkDeal</span>
+  </header>
+
+  <!-- ── STEP 1 : URL ── -->
+  <section id="step-url" class="step active">
+    <div class="card">
+      <label>URL du produit</label>
+      <div class="input-row">
+        <input id="product-url" type="url" placeholder="Colle l'URL ici…" autocomplete="off" autocorrect="off" spellcheck="false">
+        <button id="scrape-btn" class="btn-icon" aria-label="Analyser">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+      <div id="scrape-loader" class="loader hidden"></div>
+      <div id="scrape-error" class="error-msg hidden"></div>
+    </div>
+  </section>
+
+  <!-- ── STEP 2 : EDIT ── -->
+  <section id="step-edit" class="step hidden">
+    <div class="card">
+      <label>Ta phrase</label>
+      <input id="phrase" type="text" placeholder="Le cargo The North Face de retour en promo">
+    </div>
+
+    <div class="row-half">
+      <div class="card">
+        <label>Prix promo</label>
+        <div class="price-wrap">
+          <input id="current-price" type="text" inputmode="decimal" placeholder="45">
+          <span class="currency">€</span>
+        </div>
+      </div>
+      <div class="card">
+        <label>Prix original</label>
+        <div class="price-wrap">
+          <input id="original-price" type="text" inputmode="decimal" placeholder="90">
+          <span class="currency">€</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="images-card">
+      <label>Images produit <span class="label-hint">min. 2 Twitter · 3 TikTok · tap pour retirer</span></label>
+      <div id="images-grid" class="images-grid"></div>
+    </div>
+
+    <button id="process-btn" class="btn-primary">Générer le deal →</button>
+    <button id="back-btn" class="btn-ghost">← Retour</button>
+  </section>
+
+  <!-- ── STEP 3 : RESULTS ── -->
+  <section id="step-results" class="step hidden">
+
+    <div id="result-loader" class="loader-block">
+      <div class="spinner"></div>
+      <span>Génération en cours…</span>
+    </div>
+
+    <!-- ── BLOC TWITTER ── -->
+    <div class="card action-card hidden" id="card-twitter">
+      <div class="action-header">
+        <div class="action-icon x-icon">𝕏</div>
+        <div><h3>Twitter / X</h3></div>
+      </div>
+
+      <!-- Texte du tweet -->
+      <div id="tweet-preview" class="tweet-preview"></div>
+
+      <!-- Photos à sauvegarder -->
+      <div id="twitter-photos-section" class="hidden">
+        <p class="step-hint">① Appuie sur chaque photo → appui long → <strong>Enregistrer dans Photos</strong></p>
+        <div id="twitter-photos" class="photos-row"></div>
+        <button id="save-twitter-photos-btn" class="btn-save-photos">
+          Sauvegarder les 2 photos →
+        </button>
+      </div>
+
+      <!-- Ouvrir Twitter -->
+      <div class="action-btns" style="margin-top:12px">
+        <button id="copy-text-btn" class="btn-secondary">Copier le texte</button>
+        <button id="open-twitter-btn" class="btn-twitter">② Ouvrir Twitter →</button>
+      </div>
+
+      <p class="step-hint" style="margin-top:10px">Attache les 2 photos depuis ta galerie puis poste</p>
+
+      <!-- Confirmation -->
+      <button id="tweet-done-btn" class="btn-primary" style="margin-top:14px">
+        ✓ Tweet posté → Étape TikTok
+      </button>
+    </div>
+
+    <!-- ── BLOC TIKTOK ── -->
+    <div class="card action-card hidden" id="card-tiktok">
+      <div class="action-header">
+        <div class="action-icon tiktok-icon">♪</div>
+        <div><h3>TikTok Carousel</h3></div>
+      </div>
+      <p class="step-hint">① Appuie sur chaque slide → appui long → <strong>Enregistrer dans Photos</strong></p>
+      <div id="carousel-slides" class="carousel-slides"></div>
+      <p class="step-hint" style="margin-top:10px">② Copie le hashtag → ouvre TikTok depuis ton écran d'accueil → colle dans la description</p>
+      <button id="share-tiktok-btn" class="btn-tiktok">Copier le hashtag →</button>
+    </div>
+
+    <!-- c8ke -->
+    <div class="card action-card hidden" id="card-c8ke">
+      <div class="action-header">
+        <div class="action-icon link-icon">🔗</div>
+        <div>
+          <h3>c8ke</h3>
+          <p id="c8ke-status-text">En cours…</p>
+        </div>
+        <div id="c8ke-badge" class="badge"></div>
+      </div>
+    </div>
+
+    <button id="new-deal-btn" class="btn-ghost hidden">+ Nouveau deal</button>
+  </section>
+
+  <script src="/app.js"></script>
+</body>
+</html>
