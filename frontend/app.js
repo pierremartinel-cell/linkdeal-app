@@ -351,11 +351,12 @@ $("share-tiktok-btn").addEventListener("click", async () => {
 
 $("open-tiktok-btn").addEventListener("click", () => {
   const tag = "#" + (state.brand || "").toLowerCase().replace(/\s+/g, "").replace(/[^a-z0-9]/g, "");
-  if (tag.length > 1 && navigator.clipboard) {
-    navigator.clipboard.writeText(tag).catch(() => {});
-    toast(`${tag} copié !`);
+  const text = (state.tweetText || "") + (tag.length > 1 ? "\n\n" + tag : "");
+  if (text && navigator.clipboard) {
+    navigator.clipboard.writeText(text).catch(() => {});
+    toast("Texte + hashtag copiés !");
   }
-  setTimeout(() => { window.open("https://www.tiktok.com", "_blank"); }, 300);
+  setTimeout(() => { window.open("https://www.tiktok.com", "_blank"); }, 400);
 });
 
 function downloadImage(path, index) {
