@@ -324,8 +324,38 @@ function renderCarousel(images) {
 }
 
 /* ── Share / Download ── */
-$("share-tiktok-btn").addEventListener("click", () => {
+$("share-tiktok-btn").addEventListener("click", async () => {
+  const paths = state.carouselImages;
+  if (!paths.length) return;
+
   const tag = "#" + (state.brand || "").toLowerCase().replace(/\s+/g, "").replace(/[^a-z0-9]/g, "");
+
+  // Try Web Share API (works on HTTPS — opens iOS share sheet → TikTok)
+  if (navigator.canShare) {
+    try {
+      $("share-tiktok-btn").textContent = "Préparation…";
+      $("share-tiktok-btn").disabled = true;
+      const files = await Promise.all(
+        paths.map(async (path, i) => {
+          const resp = await fetch(path);
+          const blob = await resp.blob();
+          return new File([blob], `linkdeal_${i + 1}.jpg`, { type: "image/jpeg" });
+        })
+      );
+      if (navigator.canShare({ files })) {
+        if (navigator.clipboard) navigator.clipboard.writeText(tag).catch(() => {});
+        await navigator.share({ files, title: "LinkDeal" });
+        return;
+      }
+    } catch (err) {
+      if (err.name === "AbortError") return;
+    } finally {
+      $("share-tiktok-btn").textContent = "Partager sur TikTok →";
+      $("share-tiktok-btn").disabled = false;
+    }
+  }
+
+  // Fallback : copy hashtag only
   if (tag.length > 1 && navigator.clipboard) {
     navigator.clipboard.writeText(tag).catch(() => {});
     toast(`${tag} copié ! Ouvre TikTok et colle-le`);
