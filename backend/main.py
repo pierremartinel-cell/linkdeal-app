@@ -111,7 +111,9 @@ async def _bg_process(job_id: str, req: ProcessRequest, awin_link: str):
 
         cover_image = product["image_urls"][0] if product.get("image_urls") else None
 
-        c8ke_task = asyncio.create_task(add_to_c8ke(req.phrase, awin_link, cover_image))
+        c8ke_title = f"{req.phrase} — {req.current_price}€ au lieu de {req.original_price}€"
+        print(f"[c8ke] Sending title={c8ke_title!r} url={awin_link!r}")
+        c8ke_task = asyncio.create_task(add_to_c8ke(c8ke_title, awin_link, cover_image))
         carousel_task = asyncio.create_task(
             generate_carousel(product, req.phrase, req.current_price, req.original_price, awin_link, job_id)
         )
